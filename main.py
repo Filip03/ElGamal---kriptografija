@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from routers.encode_router import router as enc_router
+from routers.decode_router import router as dec_router
 
 app = FastAPI(title = 'ElGamal kripto-sistem', version='1.0.0')
 
@@ -9,6 +11,9 @@ app.add_middleware(CORSMiddleware,
                     allow_methods=["*"],
                     allow_headers=["*"]
                     )
+
+app.include_router(enc_router, prefix='/enc')
+app.include_router(dec_router, prefix='/dec')
 
 @app.get('/')
 async def root():

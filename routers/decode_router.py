@@ -13,10 +13,10 @@ class DecryptionReq(BaseModel):
 class DecryptionResponse(BaseModel):
     mssg: str
 
-@router.get('')
+@router.post('')
 def decrypt(req: DecryptionReq):
     try:
         result = elgam_dec(req.cipher, req.p, req.a)
-        return DecryptionResponse(mggs = result)
+        return DecryptionResponse(mssg = result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

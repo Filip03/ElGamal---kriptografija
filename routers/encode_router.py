@@ -17,12 +17,12 @@ class EncryptionResponse(BaseModel):
     a: str
     ga: str
 
-@router.get("")
+@router.post("")
 def encrypt(req: EncryptionReq):
     try:
-        data = elgam_set(req.k)
-        result = elgam_enc(req.mssg, data.p, data.g, data.ga)
-        return EncryptionResponse(cipher=[(str(c1), str(c2)) for c1, c2 in result], p = data.p, g = data.g,
-                                a = data.a, ga = data.ga)
+        p, g, a, ga = elgam_set(req.k)
+        result = elgam_enc(req.mssg, p, g, ga)
+        return EncryptionResponse(cipher=[(str(c1), str(c2)) for c1, c2 in result], p = p, g = g,
+                                a = a, ga = ga)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

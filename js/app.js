@@ -87,6 +87,9 @@ function init() {
     });
 
     function switchTab(tab) {
+        const fab = document.querySelector('.fab-scroll-bottom');
+        if (fab) fab.style.display = tab === 'enc' ? '' : 'none';
+
         app.querySelectorAll('.tab-btn').forEach(b =>
             b.classList.toggle('tab-btn--active', b.dataset.tab === tab)
         );

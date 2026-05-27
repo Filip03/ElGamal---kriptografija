@@ -139,6 +139,8 @@ export function createEncryptPanel(onUseForDecrypt) {
 }
 
 function renderResults(container, data, originalMessage, onUseForDecrypt) {
+    document.querySelector('.fab-scroll-bottom')?.remove();
+
     const { cipher, p, g, a, ga } = data;
     container.innerHTML = '';
 

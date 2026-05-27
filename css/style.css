@@ -608,6 +608,36 @@ html, body {
     max-width: 300px;
 }
 
+.iter-load-more {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.fab-scroll-bottom {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 200;
+    padding: 10px 18px;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
+    white-space: nowrap;
+}
+
+.fab-scroll-bottom:hover {
+    background: var(--bg);
+    border-color: var(--border-hover);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.16);
+}
+
 /* ============================================================
    Decrypted message
    ============================================================ */

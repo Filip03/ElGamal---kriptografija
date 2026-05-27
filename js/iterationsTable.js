@@ -1,3 +1,6 @@
+const INITIAL_BLOCKS = 5;
+const PAGE_SIZE = 20;
+
 export function createIterationsTable(cipher, message = null, p = null) {
     const section = document.createElement('section');
     section.className = 'result-section';
@@ -21,19 +24,81 @@ export function createIterationsTable(cipher, message = null, p = null) {
                         <th>c₂ = m · (g<sup>a</sup>)<sup>k<sub>m</sub></sup> mod p</th>
                     </tr>
                 </thead>
-                <tbody>
-                    ${cipher.map(([c1, c2], i) => `
-                        <tr>
-                            <td class="td-num">${i + 1}</td>
-                            ${showText ? `<td class="td-text">${escHtml(blocks[i] ?? '')}</td>` : ''}
-                            <td class="td-cipher">${c1}</td>
-                            <td class="td-cipher">${c2}</td>
-                        </tr>
-                    `).join('')}
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
     `;
+
+    const tbody = section.querySelector('tbody');
+    let rendered = 0;
+
+    function renderRows(count) {
+        const end = Math.min(rendered + count, cipher.length);
+        for (let i = rendered; i < end; i++) {
+            const [c1, c2] = cipher[i];
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="td-num">${i + 1}</td>
+                ${showText ? `<td class="td-text">${escHtml(blocks[i] ?? '')}</td>` : ''}
+                <td class="td-cipher">${c1}</td>
+                <td class="td-cipher">${c2}</td>
+            `;
+            tbody.appendChild(tr);
+        }
+        rendered = end;
+    }
+
+    renderRows(INITIAL_BLOCKS);
+
+    if (cipher.length > INITIAL_BLOCKS) {
+        const btnWrap = document.createElement('div');
+        btnWrap.className = 'iter-load-more';
+
+        const loadBtn = document.createElement('button');
+        loadBtn.className = 'btn btn--outline btn--sm';
+
+        const allBtn = document.createElement('button');
+        allBtn.className = 'btn btn--outline btn--sm';
+        allBtn.textContent = 'Prikaži sve';
+
+        function updateLoadBtn() {
+            const remaining = cipher.length - rendered;
+            const next = Math.min(PAGE_SIZE, remaining);
+            loadBtn.textContent = `Prikaži još ${next} (ostaje ${remaining})`;
+        }
+
+        updateLoadBtn();
+
+        loadBtn.addEventListener('click', () => {
+            renderRows(PAGE_SIZE);
+            if (rendered >= cipher.length) {
+                btnWrap.remove();
+            } else {
+                updateLoadBtn();
+            }
+        });
+
+        const scrollBtn = document.createElement('button');
+        scrollBtn.className = 'fab-scroll-bottom';
+        scrollBtn.title = 'Idi na dno stranice';
+        scrollBtn.textContent = '↓ Dno';
+
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        });
+
+        allBtn.addEventListener('click', () => {
+            renderRows(cipher.length);
+            loadBtn.remove();
+            allBtn.remove();
+            btnWrap.remove();
+            document.body.appendChild(scrollBtn);
+        });
+
+        btnWrap.appendChild(loadBtn);
+        btnWrap.appendChild(allBtn);
+        section.appendChild(btnWrap);
+    }
 
     return section;
 }

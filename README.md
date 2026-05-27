@@ -1,6 +1,19 @@
 # ElGamal---kriptografija
 Projekat iz kursa "Kriptografija" - enkripcija i dekripcija ElGamal algoritmom.
 
+## Pokretanje
+
+1. Backend — iz direktorijuma `ElGamal---kriptografija`:
+pip install -r requirements.txt
+python -m uvicorn main:app --reload
+
+2. Frontend — iz direktorijuma `elgamal-frontend`:
+python -m http.server 3000
+
+3. Otvoriti u pretraživaču: `http://localhost:3000`
+
+Aplikacija se mora otvoriti u browseru, ne dvoklikom na `index.html`.
+
 ## Grupe zadataka
 
 ### 1. Grupa I

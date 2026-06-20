@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'https://elgamal.onrender.com';
 
 export async function encryptMessage(mssg, k) {
     const res = await fetch(`${API_BASE}/enc`, {
